@@ -20,4 +20,12 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
-
+// close modal
+const closeBtn = document.querySelector(".close");
+closeBtn.addEventListener("click", () => { modalbg.style.display = "none"; });
+//gestion de la fermeture par touche echap
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    modalbg.style.display = "none";
+  }
+});
