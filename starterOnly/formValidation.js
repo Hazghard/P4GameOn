@@ -1,7 +1,14 @@
+/**
+ * Execution encapsulée des fonctions du site
+ * @param { modalBtn } recuperation dun element de dom
+ * @param { modalCloseBtn } recuperation dun element de dom
+ * @param { form } recuperation dun element de dom
+ * @param { formSubmit } recuperation dun element de dom
+ */
 function main() {
     const modalBtn = document.querySelectorAll(".modal-btn");
     const modalCloseBtn = document.querySelectorAll(".close");
-    const form = document.querySelector("#inscriptionForm"); //Est-ce utilise de déclarer ici alors qu'on ne l'utilise que tres loin (ca nous oblige a donner en paramatre a chaque niveaux)
+    const form = document.querySelector("#inscriptionForm");
     const formSubmit = document.querySelector("#btnsendmodal");
 
     modalBtn.forEach(btn => btn.addEventListener("click", () => { launchModal(); }));
@@ -12,6 +19,11 @@ function main() {
 
 main();
 
+
+/**
+ * Switch de class pour le menu burger
+ * @param { x } recuperation dun element de dom
+ */
 function editNav() {
     var x = document.getElementById("myTopnav");
     if (x.className === "topnav") {
@@ -21,17 +33,52 @@ function editNav() {
     }
 };
 
-// launch modal form
+/**
+ * Launch de la modal
+ * @param { modal } objet recuperation fenetre modal
+ */
 function launchModal() {
-    document.querySelector(".bground").style.display = "block";
+    let modal = document.querySelector(".bground")
+    modal.style.display = "block";
+    closeModalClickAway(modal);
 };
 
-// close modal form
+
+/**
+ * Fermeture modal si click a coté
+ * @param { modal } objet recuperation fenetre modal
+ */
+function closeModalClickAway(modal) {
+    document.addEventListener('click', function (event) {
+        if (event.target.className == "bground") {
+            closeModal();
+        }
+    })
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 27) {
+            closeModal();
+        }
+    })
+};
+
+
+
+/**
+ * Fermeture de la modal
+ * Todo : Trigger echap et appuy a coté
+ */
 function closeModal() {
     document.querySelector(".bground").style.display = "none";
 };
 
-// form validation procedure
+
+
+/**
+ * Form validation procedure
+ * @param { form } recuperation du formulaire
+ * @param { e } eventTrigger event push btn
+ * @param { formInputsValues } creation variable recuperation valeurs
+ */
 function formValidation(form, e) {
     e.preventDefault();
     let formInputsValues = [];
@@ -40,6 +87,13 @@ function formValidation(form, e) {
     showStates(formInputsValues, form);
 };
 
+
+/**
+ * Get all data
+ * @param { Object } form
+ * @param { Array } formInputsValues
+ * @param { radioList } separation de valeurs (isolation des radios)
+ */
 function getFormData(form, formInputsValues) {
     const formInputs = form.querySelectorAll("input");
     let radioList = [];
@@ -86,6 +140,11 @@ function getFormData(form, formInputsValues) {
     })
 };
 
+
+/**
+ * Data exams
+ * @param { Array } formInputsValues
+ */
 function checkData(formInputsValues) {
     for (let i = 0; i < formInputsValues.length; i++) {
         if (!formInputsValues[i].value && formInputsValues[i].required) {
@@ -96,7 +155,7 @@ function checkData(formInputsValues) {
             formInputsValues[i].type == "text" ? (/[A-Za-z]{2,}/.test(formInputsValues[i].value) ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") :
                 formInputsValues[i].type == "email" ? (/[A-Za-z0-9_\.+]+@[A-Za-z0-9]+\.[a-z]{2,3}/.test(formInputsValues[i].value) ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") :
                     formInputsValues[i].type == "date" ? (formInputsValues[i].value == "" ? formInputsValues[i].state = "error" : formInputsValues[i].state = "ok") :
-                        formInputsValues[i].type == "number" ? (/[0-9]*/.test(formInputsValues[i].value) ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") :
+                        formInputsValues[i].type == "number" ? (/^[0-9]+$/.test(formInputsValues[i].value) ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") : //ici l'ajout de ^ et +$ permet d'empecher la validation des exposants
                             formInputsValues[i].type == "checkbox" ? (formInputsValues[i].checked == true ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") :
                                 formInputsValues[i].type == "radio" ? (formInputsValues[i].checked == true ? formInputsValues[i].state = "ok" : formInputsValues[i].state = "error") : //possible de vérifier aussi avec : (form.querySelectorAll("input[type=radio][name=location]:checked").length > 0 ?
                                     null;
@@ -106,6 +165,12 @@ function checkData(formInputsValues) {
     }
 };
 
+
+/**
+ * Data exams
+ * @param { Array } formInputsValues : 
+ * @param { Array } form : passage pour appel fonction showformisok
+ */
 function showStates(formInputsValues, form) {
 
     //affichage des erreurs
@@ -127,6 +192,11 @@ function showStates(formInputsValues, form) {
 
 };
 
+
+/**
+ * Data exams
+ * @param { Array } form : passage pour appel fonction showformisok
+ */
 function showFormIsOk(form) {
     console.log(form);
     form.innerHTML = '<span class="successMessage">Merci, votre inscription est bien prise en compte.</br><button class="btn-submit">OK</button></span>';
