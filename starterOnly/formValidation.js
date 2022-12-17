@@ -177,11 +177,17 @@ function showStates(formInputsValues, form) {
     formInputsValues.forEach(input => {
         //Set les data-error pour proc la regle css et mettre le code erreur
         if (input.state === "error") {
-            let formDataSelector = document.querySelector(`div[class="formData"]:has(input[id=${input.id}])`);
-            formDataSelector.setAttribute("data-error-visible", "true");
+
+            // let formDataSelector = document.querySelector(`div[class="formData"]:has(input[id=${input.id}])`); //ne fonctionne pas sur firefox due a la methode has:()
+            const elements = Array.from(document.querySelectorAll('div[class="formData"]'));
+            const formDataSelector = elements.filter(element => element.querySelector(`input[id=${input.id}]`) !== null);
+            formDataSelector[0].setAttribute("data-error-visible", "true");
         } else {
-            let formDataSelector = document.querySelector(`div[class="formData"]:has(input[id=${input.id}])`);
-            formDataSelector.setAttribute("data-error-visible", "false");
+
+            // let formDataSelector = document.querySelector(`div[class="formData"]:has(input[id=${input.id}])`); //ne fonctionne pas sur firefox due a la methode has:()
+            const elements = Array.from(document.querySelectorAll('div[class="formData"]'));
+            const formDataSelector = elements.filter(element => element.querySelector(`input[id=${input.id}]`) !== null);
+            formDataSelector[0].setAttribute("data-error-visible", "false");
         }
     })
 
