@@ -194,8 +194,6 @@ function showStates(formInputsValues, form) {
     //Insertion du parametre global pour validation complete du form et trigger 
     formInputsValues.some(item => item.state === "error") ? formInputsValues.push({ globalValidators: "nok" }) : (formInputsValues.push({ globalValidators: "ok" }), showFormIsOk(form));
 
-    console.log(formInputsValues);
-
 };
 
 
@@ -204,7 +202,5 @@ function showStates(formInputsValues, form) {
  * @param { Array } form : passage pour appel fonction showformisok
  */
 function showFormIsOk(form) {
-    console.log(form);
     form.innerHTML = '<span class="successMessage">Merci, votre inscription est bien prise en compte.</br><button class="btn-submit">OK</button></span>';
-    form.innerHTML += '';
 }
